@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--Use in various version of IE-->
+        <title>Blackjack</title>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script src="vsbot.js" type="text/Javascript" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <h2 class="title">Challenge 5: Blackjack</h2>
+            <h3><span id="blackjack-result">Let's Go</span></h3>
+
+            <div class="flex-blackjack-1">
+                <div id="your-box">
+                    <h2>You: <span id="your-result">0</span></h2>
+                </div>
+
+                <div id="dealer-box">
+                    <h2>Dealer: <span id="dealer-result">0</span></h2>
+                </div>
+
+            </div>
+            <div class="flex-blackjack-2">
+                <div>
+                    <button class="btn btn-primary" id="hit-button">Hit</button>
+                    <button class="btn btn-warning" id="stand-button">Stand</button>
+                    <button class="btn btn-danger" id="deal-button">Deal</button>
+                </div>
+            </div>
+
+            <div class="flex-blackjack-3">
+                <table>
+                    <tr>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Draw</th>
+                    </tr>
+
+                    <tr>
+                        <td><span id="wins">0</span></td>
+                        <td><span id="losses">0</span></td>
+                        <td><span id="draws">0</span></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        
+    </body>
+</html>
