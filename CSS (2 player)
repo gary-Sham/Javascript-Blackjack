@@ -1,0 +1,90 @@
+.container{
+    width:75%;
+    margin:0 auto;
+    text-align:center;
+    border:2px solid black;
+}
+
+h3{
+    font-size:25px;
+    margin-bottom:0;
+}
+/*Flex-box(You and dealer)*/
+.flex-blackjack-1,.flex-blackjack-2,.flex-blackjack-3{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    flex-direction:row;
+    border:1px solid black;
+}
+
+.flex-blackjack-1{
+    background: url('blackjack_background.jpg') center;
+    color:white;
+}
+
+.flex-blackjack-1 div{
+    border:1px solid black;
+    border-bottom:none;
+    padding:10px;
+    flex:1;
+    text-align:center;
+    height:500px;
+}
+
+.flex-blackjack-1 img{
+    width:100px;
+    height:130px;
+    padding:10px;
+}
+
+.flex-blackjack-2{
+    background: url('blackjack_background.jpg') center;
+    padding:10px;
+}
+
+.btn{
+    border-radius:7px;
+    outline:none;
+    padding:15px 20px;
+    font-size: 20px;
+    cursor:pointer;
+    color:white;
+}
+
+.btn:hover{
+    opacity:0.9;
+    box-shadow:0px 0px 60px #4666FF;
+    border: 3px solid #4fc3f7;
+}
+
+.btn-primary{
+    border:3px solid blue;
+    background-color:blue;
+}
+
+.btn-warning{
+    border:3px solid yellow;
+    background-color:yellow;
+    color:black;
+}
+
+.btn-danger{
+    border:3px solid red;
+    background-color:red;
+}
+
+/*Row 3*/
+
+table,th,td{
+    border:1px solid black;
+    text-align:center;
+    margin:10px 0px;
+    padding:10px;
+    border-collapse: collapse;
+}
+
+
+th{
+    padding:2px 10px;
+}
