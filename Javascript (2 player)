@@ -2,8 +2,8 @@ window.onload =function(){activity()};
 
 
 let blackjackGame = {
-    'you': {'scoreSpan': '#your-result', 'div':'#your-box','score':0},
-    'dealer': {'scoreSpan': '#dealer-result', 'div': '#dealer-box','score':0 },
+    'you': {'scoreSpan': '#your-result', 'div':'#your-box','score':0, 'AToggle':false,},
+    'dealer': {'scoreSpan': '#dealer-result', 'div': '#dealer-box','score':0, 'AToggle':false, },
     'patterns':{
         '0':{'cards':['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']}, //1 = diamond, 2= clubs, 3= heart, 4= spades
         '1':{'cards':['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']},
@@ -13,7 +13,6 @@ let blackjackGame = {
     'oriCards':['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
     'patternSym':['d','c','h','s'],
     'cardsMap':{'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,'K':10,'J':10,'Q':10,'A':[1,11]},
-    'AToggle':false,
     'wins':0,
     'losses':0,
     'draws':0,
@@ -112,7 +111,7 @@ function activity(){
     document.getElementById('hit-button').addEventListener("click",function(){
         //console.log(document.querySelector('img'));
         if(blackjackGame['isStand'] === true || blackjackGame['turnsOver'] === true ||
-        blackjackGame['you']['score']>21){
+        YOU['score']>21){
             //cannot hit after stand
         }else if(document.querySelector('#your-box').querySelectorAll('img').length>=2){
             blackjackHit();
@@ -146,7 +145,8 @@ function blackjackDeal(){
 
     blackjackGame['isStand'] = false;
     blackjackGame['turnsOver'] = false;
-    blackjackGame['AToggle'] = false;
+    YOU['AToggle'] = false;
+    DEALER['AToggle'] = false;
 
     for(var i=0; i<blackjackGame['patternSym'].length; i++){
         blackjackGame['patterns'][i]['cards'] = [];
@@ -172,7 +172,7 @@ function blackjackHit(){
     //console.log(card);
     throwToBin(card,patternIndex,yourBin); //throw into the bin
     showCard(card,pattern,YOU);
-    updateScore(card, YOU, yourBin);
+    updateScore(card, YOU);
     //console.log(YOU['score'])
     showScore(YOU);
 }
@@ -230,6 +230,15 @@ function randomCard(patternIndex){
     return someCard[randomIndex];
 }
 //=================================Show Card=======================================================
+function throwToBin(card,patternIndex,activeBin){ //so that no repeating happen
+    let cardIndex = blackjackGame['patterns'][patternIndex]['cards'].indexOf(card); //cardIndex = randomIndex
+    let removeArr = blackjackGame['patterns'][patternIndex]['cards'].splice(cardIndex,1);
+
+    activeBin['patterns'][patternIndex]['cards'] = activeBin['patterns'][patternIndex]['cards'].concat(removeArr);
+    //return binPattern;
+    //console.log(activeBin['patterns'][patternIndex]['cards'].length)
+    //console.log(activeBin['patterns'][patternIndex]['cards']);
+}
 
 function showCard(card,pattern,activePlayer){
     //console.log(card)
@@ -243,35 +252,29 @@ function showCard(card,pattern,activePlayer){
     }
 }
 
-function throwToBin(card,patternIndex,activeBin){ //so that no repeating happen
-    let cardIndex = blackjackGame['patterns'][patternIndex]['cards'].indexOf(card); //cardIndex = randomIndex
-    let removeArr = blackjackGame['patterns'][patternIndex]['cards'].splice(cardIndex,1);
-
-    activeBin['patterns'][patternIndex]['cards'] = activeBin['patterns'][patternIndex]['cards'].concat(removeArr);
-    //return binPattern;
-    //console.log(activeBin['patterns'][patternIndex]['cards'].length)
-    //console.log(activeBin['patterns'][patternIndex]['cards']);
-}
-
-function updateScore(card, activePlayer,activeBin){ //activeBin add param to Hit and logic
+function updateScore(card, activePlayer){ //activeBin add param to Hit and logic
     //console.log(card);
     if(card === 'A'){
         if(activePlayer['score']+blackjackGame['cardsMap'][card]['1']<=21){
             activePlayer['score'] = activePlayer['score'] + blackjackGame['cardsMap'][card][1];
+            activePlayer['AToggle'] = true;
         }else{
             activePlayer['score'] = activePlayer['score'] + blackjackGame['cardsMap'][card][0];
         }
     }else{
         //find the 'A'
-        if(blackjackGame['AToggle']===false && 
+        if(activePlayer['AToggle']===true && 
         activePlayer['score']+blackjackGame['cardsMap'][card] >21){
-            for(var i=0; i<4; i++){
+            activePlayer['AToggle'] = false;
+            activePlayer['score'] = activePlayer['score'] - 10;
+            /*for(var i=0; i<4; i++){
                 if(activeBin['patterns'][i]['cards'].indexOf('A')!==-1 && 
-                activePlayer['score'] + blackjackGame['cardsMap'][card]-10<21 ){
+                activePlayer['score'] + blackjackGame['cardsMap'][card]-10<21 &&
+                activePlayer['score'] + blackjackGame['cardsMap'][card]-10>0){
                     activePlayer['score'] = activePlayer['score'] - 10;
                     blackjackGame['AToggle'] = true;
                 }
-            }
+            }*/
         }
         activePlayer['score'] = activePlayer['score'] + blackjackGame['cardsMap'][card]; //important(add)
         //if() refer to recycle bin
@@ -297,7 +300,7 @@ function dealerLogic(){
     //console.log(card);
     throwToBin(card,patternIndex,dealerBin);
     showCard(card,pattern,DEALER);
-    updateScore(card, DEALER, dealerBin);
+    updateScore(card, DEALER);
     //console.log(YOU['score'])
     showScore(DEALER);
     if(DEALER['score']>21 || DEALER['score']===21){
